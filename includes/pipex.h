@@ -18,6 +18,7 @@ typedef struct s_pipex
 	int		infile;
 	char	***arguments;
 	char	**path;
+	int		fdpipe[2];
 }			t_pipex;
 
 int			exec_cmd(t_pipex *pipex, int index, char **envp);
