@@ -33,7 +33,8 @@ void	ft_free_and_close(t_pipex *pipex)
 	if (pipex->arguments != NULL)
 		ft_free_arguments(pipex->arguments);
 	if (pipex->path != NULL)
-		ft_free_split(pipex->path);}
+		ft_free_split(pipex->path);
+}
 
 void	ft_close_error(t_pipex *pipex)
 {

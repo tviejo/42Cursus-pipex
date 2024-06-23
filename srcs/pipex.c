@@ -116,6 +116,8 @@ void	init_pipex(t_pipex *pipex)
 {
 	pipex->infile = -1;
 	pipex->outfile = -1;
+	pipex->fdpipe[0] = -1;
+	pipex->fdpipe[1] = -1;
 	pipex->path = NULL;
 	pipex->arguments = NULL;
 }
