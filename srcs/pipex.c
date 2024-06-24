@@ -1,64 +1,16 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/24 10:20:31 by tviejo            #+#    #+#             */
+/*   Updated: 2024/06/24 10:26:35 by tviejo           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/pipex.h"
-
-int	wait_for_child(pid_t pid)
-{
-	int	status;
-
-	if (waitpid(pid, &status, 0) < 0)
-	{
-		printf("waitpid failed: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	create_pipe(t_pipex *pipex)
-{
-	if (pipe(pipex->fdpipe) == -1)
-	{
-		printf("pipe failed: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-int	close_pipe(t_pipex *pipex)
-{
-	if (pipex->fdpipe[0] != -1)
-		close(pipex->fdpipe[0]);
-	if (pipex->fdpipe[1] != -1)
-		close(pipex->fdpipe[1]);
-	return (EXIT_SUCCESS);
-}
-int	duplicate_pipe(t_pipex *pipex, int mode)
-{
-	if (mode == 1)
-	{
-		if (dup2(pipex->fdpipe[1], STDOUT_FILENO) == -1)
-			ft_close_error(pipex);
-		close(pipex->fdpipe[1]);
-		pipex->fdpipe[1] = -1;
-	}
-	else
-	{
-		if (dup2(pipex->fdpipe[0], STDIN_FILENO) == -1)
-			ft_close_error(pipex);
-		close(pipex->fdpipe[0]);
-		pipex->fdpipe[0] = -1;
-	}
-	return (EXIT_SUCCESS);
-}
-
-void	close_fd(int fd, t_pipex *pipex)
-{
-	if (fd != -1)
-	{
-		if (close(fd) == -1)
-		{
-			ft_close_error(pipex);
-		}
-	}
-}
 
 int	child_process(t_pipex *pipex, int index, char **envp)
 {
@@ -121,6 +73,7 @@ void	init_pipex(t_pipex *pipex)
 	pipex->path = NULL;
 	pipex->arguments = NULL;
 }
+
 int	duplicate(t_pipex *pipex, int mode)
 {
 	if (mode == 1)
@@ -138,16 +91,11 @@ int	duplicate(t_pipex *pipex, int mode)
 	return (EXIT_SUCCESS);
 }
 
-int	main(int argc, char **argv, char **envp)
+int	handle_multiple_pipes(int argc, char **argv, char **envp)
 {
 	int		i;
 	t_pipex	pipex;
 
-	if (argc < 5)
-	{
-		printf("use this format: ./pipex file1 cmd1 cmd2 file2\n");
-		exit(EXIT_FAILURE);
-	}
 	init_pipex(&pipex);
 	init_fd(&pipex, argc, argv, 1);
 	parse_argument(&pipex, argc, argv, envp);

@@ -4,7 +4,7 @@ SRC_DIR         =       srcs/
 
 OBJ_DIR     	=   	objs/
 
-SRCS            =       exec.c parsing.c pipex.c close.c
+SRCS            =       exec.c parsing.c pipex.c close.c utils.c main.c
 
 vpath %.c $(SRC_DIR)
 
