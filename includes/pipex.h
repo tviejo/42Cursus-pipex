@@ -6,7 +6,7 @@
 /*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 10:21:00 by tviejo            #+#    #+#             */
-/*   Updated: 2024/06/24 10:26:37 by tviejo           ###   ########.fr       */
+/*   Updated: 2024/07/05 22:18:54 by tviejo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,17 +32,19 @@ typedef struct s_pipex
 	int		nb_arguments;
 	char	**path;
 	int		fdpipe[2];
+	pid_t	*pid;
 }			t_pipex;
 
+void	*ft_calloc_pid(t_pipex *pipex, int argc);
 int			exec_cmd(t_pipex *pipex, int index, char **envp);
 void		parse_argument(t_pipex *pipex, int argc, char **arg, char **envp);
 void		ft_close_error(t_pipex *pipex);
 void		ft_free_and_close(t_pipex *pipex);
 int			handle_multiple_pipes(int argc, char **argv, char **envp);
-void		close_fd(int fd, t_pipex *pipex);
+int			close_fd(int fd, t_pipex *pipex);
 int			duplicate_pipe(t_pipex *pipex, int mode);
 int			close_pipe(t_pipex *pipex);
 int			create_pipe(t_pipex *pipex);
-int			wait_for_child(pid_t pid);
+int			wait_for_child(pid_t pid, t_pipex *pipex);
 
 #endif

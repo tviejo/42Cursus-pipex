@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   close.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tviejo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 10:20:08 by tviejo            #+#    #+#             */
-/*   Updated: 2024/06/24 10:20:10 by tviejo           ###   ########.fr       */
+/*   Updated: 2024/07/05 22:00:22 by tviejo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,19 @@ void	ft_free_arguments(char ***arguments)
 
 void	ft_free_and_close(t_pipex *pipex)
 {
-	if (pipex->infile != -1)
+	if (pipex->infile > 2)
 		close(pipex->infile);
-	if (pipex->outfile != -1)
+	if (pipex->outfile > 2)
 		close(pipex->outfile);
-	if (pipex->fdpipe[0] != -1)
+	if (pipex->fdpipe[0] > 2)
 		close(pipex->infile);
-	if (pipex->fdpipe[1] != -1)
+	if (pipex->fdpipe[1] > 2)
 		close(pipex->outfile);
 	if (pipex->arguments != NULL)
 		ft_free_arguments(pipex->arguments);
 	if (pipex->path != NULL)
 		ft_free_split(pipex->path);
+	free(pipex->pid);
 }
 
 void	ft_close_error(t_pipex *pipex)

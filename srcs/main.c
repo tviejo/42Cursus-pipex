@@ -16,7 +16,7 @@ int	main(int argc, char **argv, char **envp)
 	if (argc < 5)
 	{
 		printf("use this format: ./pipex file1 cmd1 cmd2 file2\n");
-		exit(EXIT_FAILURE);
+		ft_close_error(NULL);
 	}
     else if (strncmp(argv[1], "here_doc", 8) == 0 && argc == 6)
     {
@@ -29,7 +29,7 @@ int	main(int argc, char **argv, char **envp)
     else
 	{
 		printf("use this format: ./pipex file1 cmd1 cmd2 file2\n");
-		exit(EXIT_FAILURE);
+		ft_close_error(NULL);
 	}
 	return (EXIT_SUCCESS);
 }
