@@ -6,7 +6,7 @@
 /*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 10:20:08 by tviejo            #+#    #+#             */
-/*   Updated: 2024/07/05 22:00:22 by tviejo           ###   ########.fr       */
+/*   Updated: 2024/07/06 13:44:15 by tviejo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,17 @@ void	ft_free_and_close(t_pipex *pipex)
 		close(pipex->outfile);
 	if (pipex->arguments != NULL)
 		ft_free_arguments(pipex->arguments);
-	if (pipex->path != NULL)
-		ft_free_split(pipex->path);
 	free(pipex->pid);
 }
 
-void	ft_close_error(t_pipex *pipex)
+void	ft_close_error(t_pipex *pipex, int mode)
 {
-	if (errno != 0)
-		ft_printf("fail: %s\n", strerror(errno));
+	perror("Error");
+	if (mode == 1)
+	{
+		if (pipex->path != NULL)
+			ft_free_split(pipex->path);
+	}
 	ft_free_and_close(pipex);
 	exit(EXIT_FAILURE);
 }
