@@ -6,7 +6,7 @@
 /*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 10:20:31 by tviejo            #+#    #+#             */
-/*   Updated: 2024/07/06 15:42:30 by tviejo           ###   ########.fr       */
+/*   Updated: 2024/07/06 16:23:08 by tviejo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,7 @@ int	handle_multiple_pipes(int argc, char **argv, char **envp)
 	duplicate(&pipex, 2);
 	last_child_process(&pipex, i - 2, envp);
 	while (waitpid(-1, NULL, 0) > 0)
-	{
-	}
+		;
 	exec_error(&pipex, argv, argc);
 	ft_free_and_close(&pipex);
 	return (EXIT_SUCCESS);
