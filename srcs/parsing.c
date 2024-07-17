@@ -6,7 +6,7 @@
 /*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 10:20:24 by tviejo            #+#    #+#             */
-/*   Updated: 2024/07/06 15:38:48 by tviejo           ###   ########.fr       */
+/*   Updated: 2024/07/17 10:41:32 by tviejo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ char	*find_cmd(char *cmd, char **paths)
 	i = 0;
 	tmp = NULL;
 	tmppath = NULL;
+	if (access(cmd, F_OK | X_OK) == 0)
+		return (ft_strdup(cmd));
 	while (paths[i] != NULL)
 	{
 		free(tmp);
@@ -43,10 +45,7 @@ char	*find_cmd(char *cmd, char **paths)
 			break ;
 		tmp = ft_strjoin(tmppath, cmd);
 		if (tmp != NULL && access(tmp, F_OK | X_OK) == 0)
-		{
-			free(tmppath);
-			return (tmp);
-		}
+			return (free(tmppath), tmp);
 		i++;
 	}
 	ft_printf("command not found: %s\n", cmd);

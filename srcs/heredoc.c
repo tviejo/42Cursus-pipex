@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tviejo <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/06 15:58:10 by tviejo            #+#    #+#             */
-/*   Updated: 2024/07/06 15:58:11 by tviejo           ###   ########.fr       */
+/*   Updated: 2024/07/06 17:37:41 by tviejo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ int	handle_here_doc(char **argv)
 	{
 		close(fd[1]);
 		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
 		wait(NULL);
 	}
-	close(fd[0]);
 	return (EXIT_SUCCESS);
 }
 
