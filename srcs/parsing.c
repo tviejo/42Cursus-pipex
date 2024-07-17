@@ -6,7 +6,7 @@
 /*   By: tviejo <tviejo@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/24 10:20:24 by tviejo            #+#    #+#             */
-/*   Updated: 2024/07/17 10:41:32 by tviejo           ###   ########.fr       */
+/*   Updated: 2024/07/17 13:18:02 by tviejo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,20 @@ char	*find_path(char **envp)
 	}
 }
 
-char	*find_cmd(char *cmd, char **paths)
+void	ft_free_cmd(char	**cmd)
+{
+	int	i;
+
+	i = 0;
+	while (cmd[i] != NULL)
+	{
+		free(cmd[i]);
+		cmd[i] = NULL;
+		i++;
+	}
+}
+
+char	*find_cmd(char **cmd, char **paths)
 {
 	char	*tmp;
 	char	*tmppath;
@@ -34,8 +47,6 @@ char	*find_cmd(char *cmd, char **paths)
 	i = 0;
 	tmp = NULL;
 	tmppath = NULL;
-	if (access(cmd, F_OK | X_OK) == 0)
-		return (ft_strdup(cmd));
 	while (paths[i] != NULL)
 	{
 		free(tmp);
@@ -43,12 +54,16 @@ char	*find_cmd(char *cmd, char **paths)
 		tmppath = ft_strjoin(paths[i], "/");
 		if (tmppath == NULL)
 			break ;
-		tmp = ft_strjoin(tmppath, cmd);
+		tmp = ft_strjoin(tmppath, cmd[0]);
 		if (tmp != NULL && access(tmp, F_OK | X_OK) == 0)
-			return (free(tmppath), tmp);
+		{
+			free(tmppath);
+			return (tmp);
+		}
 		i++;
 	}
-	ft_printf("command not found: %s\n", cmd);
+	ft_printf("command not found: %s\n", cmd[0]);
+	ft_free_cmd(cmd);
 	return (free(tmppath), free(tmp), NULL);
 }
 
@@ -69,7 +84,10 @@ void	parse_argument(t_pipex *pipex, int argc, char **arg, char **envp)
 		pipex->arguments[i] = ft_split(arg[i + 2], ' ');
 		if (pipex->arguments[i] == NULL)
 			ft_close_error(pipex, 1);
-		tmp = find_cmd(pipex->arguments[i][0], pipex->path);
+		if (access(pipex->arguments[i][0], F_OK | X_OK) == 0)
+			tmp = ft_strdup(pipex->arguments[i][0]);
+		else
+			tmp = find_cmd(pipex->arguments[i], pipex->path);
 		free(pipex->arguments[i][0]);
 		pipex->arguments[i][0] = tmp;
 		i++;
